@@ -24,7 +24,7 @@ class ProductCache:
         self.last_update = time.time()
 
     def search(self, query: str):
-        self.refresh_if_needed()
+        self.refresh()
 
         q = query.lower()
         return [p for p in self.products
