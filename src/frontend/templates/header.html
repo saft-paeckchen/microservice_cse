@@ -65,18 +65,23 @@
                     {{ end }}
                 </a>
                 <div class="controls">
-                    <form method="GET" action="{{ $.baseUrl }}/search" class="search-form d-flex align-items-center">
-    <input
-        type="text"
-        name="q"
-        class="form-control search-input"
-        placeholder="Search products..."
-        aria-label="Search"
-    />
-    <button type="submit" class="btn search-btn">
-        🔍
-    </button>
-</form>
+                    <form method="GET" action="{{ $.baseUrl }}/home" class="search-form d-flex align-items-center">
+                        <input
+                            type="search"
+                            name="q"
+                            class="form-control search-input"
+                            placeholder="Search products..."
+                            aria-label="Search"
+                            list="vorschlaege"
+                        />
+                        <datalist id="vorschlaege">
+                            <option>test1</option>
+                            <option>test2</option>
+                        </datalist>
+                        <button type="submit" class="btn search-btn">
+                            🔍
+                        </button>
+                    </form>
 
                     {{ if $.show_currency }}
                     <div class="h-controls">
