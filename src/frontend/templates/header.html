@@ -46,9 +46,9 @@
     {{ end }}
 </head>
 
-<body>
     <header>
         {{ if $.frontendMessage }}
+        <body>
         <div class="navbar">
             <div class="container d-flex justify-content-center">
                 <div class="h-free-shipping">{{ $.frontendMessage }}</div>
@@ -65,6 +65,30 @@
                     {{ end }}
                 </a>
                 <div class="controls">
+                    <form method="POST" action="{{ $.baseUrl }}/" class="search-form d-flex align-items-center">
+                        <input
+                            type="search"
+                            name="q"
+                            class="form-control search-input"
+                            placeholder="Search products..."
+                            aria-label="Search"
+                            list="vorschlaege"
+                        />
+                        <datalist id="vorschlaege">
+                            <option>Sunglasses</option>
+                            <option>Tank Top</option>
+                            <option>Watch</option>
+                            <option>Loafers</option>
+                            <option>Hairdryer</option>
+                            <option>Candle Holder</option>
+                            <option>Salt & Pepper Shakers</option>
+                            <option>Bamboo Glass Jar</option>
+                            <option>Mug</option>
+                        </datalist>
+                        <button type="submit" class="btn search-btn">
+                            🔍
+                        </button>
+                    </form>
 
                     {{ if $.show_currency }}
                     <div class="h-controls">
