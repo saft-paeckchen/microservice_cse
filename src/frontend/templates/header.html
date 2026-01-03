@@ -65,7 +65,7 @@
                     {{ end }}
                 </a>
                 <div class="controls">
-                    <form method="GET" action="{{ $.baseUrl }}/home" class="search-form d-flex align-items-center">
+                    <form method="POST" action="{{ $.baseUrl }}/" class="search-form d-flex align-items-center">
                         <input
                             type="search"
                             name="q"
@@ -75,8 +75,15 @@
                             list="vorschlaege"
                         />
                         <datalist id="vorschlaege">
-                            <option>test1</option>
-                            <option>test2</option>
+                            <option>Sunglasses</option>
+                            <option>Tank Top</option>
+                            <option>Watch</option>
+                            <option>Loafers</option>
+                            <option>Hairdryer</option>
+                            <option>Candle Holder</option>
+                            <option>Salt & Pepper Shakers</option>
+                            <option>Bamboo Glass Jar</option>
+                            <option>Mug</option>
                         </datalist>
                         <button type="submit" class="btn search-btn">
                             🔍
