@@ -2,18 +2,19 @@ import grpc
 import time
 from typing import List
 
-from recommendationservice import demo_pb2
-from recommendationservice import demo_pb2_grpc
+import demo_pb2
+import demo_pb2_grpc
 
 
 class ProductCache:
-    def __init__(self, catalog_addr: str):
-        self.catalog_addr = catalog_addr
+    def __init__(self, catalog_addr: str = None,stub = False):
+        if stub:
+            self.stub = stub
+        else:
+            channel = grpc.insecure_channel(catalog_addr)
+            self.stub = demo_pb2_grpc.ProductCatalogServiceStub(channel)
         self.products = []
         self.last_update = 0
-
-        channel = grpc.insecure_channel(catalog_addr)
-        self.stub = demo_pb2_grpc.ProductCatalogServiceStub(channel)
 
     def refresh(self):
         if time.time() - self.last_update < 120:
