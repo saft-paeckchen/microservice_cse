@@ -16,7 +16,6 @@ service SearchService {
 // -------- Messages --------
 
 message SearchRequest {
-  // Freitext aus der Suchleiste
   string query = 1;
 }
 
