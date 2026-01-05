@@ -260,3 +260,17 @@ message Ad {
     // short advertisement text to display.
     string text = 2;
 }
+
+// -------- Search Service --------
+
+service SearchService {
+  rpc SearchedProducts (SearchedRequest) returns (SearchedResponse) {}
+}
+
+message SearchedRequest {
+  string query = 1;
+}
+
+message SearchedResponse {
+  repeated Product products = 1;
+}

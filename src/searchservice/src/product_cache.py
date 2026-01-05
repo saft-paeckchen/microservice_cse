@@ -7,7 +7,7 @@ import demo_pb2_grpc
 
 
 class ProductCache:
-    def __init__(self, catalog_addr: str = None,stub = False):
+    def __init__(self, catalog_addr: str = "",stub = False):
         if stub:
             self.stub = stub
         else:
@@ -28,7 +28,13 @@ class ProductCache:
         self.refresh()
 
         q = query.lower()
-        return [p for p in self.products
-                    if q in p.name.lower()
-        ]
+        # return [p for p in self.products
+        #             if q in p.name.lower()
+        # ]
+    
+        result = []
+        for p in self.products:
+            if q in p.name.lower():
+                result.append(p)
+        return result
 
