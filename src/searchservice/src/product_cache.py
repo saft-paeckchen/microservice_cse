@@ -7,7 +7,7 @@ import demo_pb2_grpc
 
 
 class ProductCache:
-    def __init__(self, catalog_addr: str = None,stub = False):
+    def __init__(self, catalog_addr: str = "",stub = False):
         if stub:
             self.stub = stub
         else:
