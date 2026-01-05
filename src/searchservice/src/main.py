@@ -21,9 +21,9 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
     port = os.environ.get('PORT', "8080")
-    catalog_addr = os.environ.get('SEARCH_SERVICE_ADDR', '')
+    catalog_addr = os.environ.get('PRODUCT_CATALOG_SERVICE_ADDR', '')
     if catalog_addr == "":
-        raise Exception('SEARCH_SERVICE_ADDR environment variable not set')
+        raise Exception('PRODUCT_CATALOG_SERVICE_ADDR environment variable not set')
 
     product_cache = ProductCache(catalog_addr = catalog_addr)
     search_service = SearchService(product_cache)

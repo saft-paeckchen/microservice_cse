@@ -74,6 +74,8 @@ spec:
             value: "cartservice:7070"
           - name: RECOMMENDATION_SERVICE_ADDR
             value: "recommendationservice:8080"
+          - name: SEARCH_SERVICE_ADDR
+            value: "searchservice:9090"
           - name: SHIPPING_SERVICE_ADDR
             value: "shippingservice:50051"
           - name: CHECKOUT_SERVICE_ADDR

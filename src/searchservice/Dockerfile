@@ -46,7 +46,7 @@ COPY --from=builder /usr/local/lib/python3.12/ /usr/local/lib/python3.12/
 COPY . .
 
 # set listen port
-ENV PORT="8080"
-EXPOSE 8080
+ENV PORT="9090"
+EXPOSE 9090
 
 ENTRYPOINT ["python", "src/main.py"]
