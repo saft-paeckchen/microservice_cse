@@ -127,7 +127,14 @@ func (fe *frontendServer) searchHandler(w http.ResponseWriter, r *http.Request) 
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve currencies"), http.StatusInternalServerError)
 		return
 	}
-	products, err := fe.getSearchedProducts(r.Context())
+	if err := r.ParseForm(); err != nil {
+    	renderHTTPError(log, r, w, errors.Wrap(err, "could not parse form"), http.StatusBadRequest)
+    	return
+	}
+	query := r.FormValue("q")
+	products, err := pb.NewSearchServiceClient(fe.searchSvcConn).
+		SearchedProducts(r.Context(), &pb.SearchedRequest{Query: query})
+
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve products"), http.StatusInternalServerError)
 		return
