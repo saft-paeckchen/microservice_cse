@@ -56,9 +56,15 @@ spec:
         readinessProbe:
           grpc:
             port: 9090
+            service: hipstershop.SearchService
+          initialDelaySeconds: 5
+          periodSeconds: 5
         livenessProbe:
           grpc:
             port: 9090
+            service: hipstershop.SearchService
+          initialDelaySeconds: 5
+          periodSeconds: 5
         resources:
           requests:
             cpu: 100m
