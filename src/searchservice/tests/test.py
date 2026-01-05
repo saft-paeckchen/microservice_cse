@@ -1,9 +1,9 @@
 import time
 from unittest.mock import MagicMock
 
-from product_cache import ProductCache
-from main import SearchService
-import demo_pb2
+from searchservice.src.product_cache import ProductCache
+from searchservice.src.main import SearchService
+import searchservice.src.demo_pb2 as demo_pb2
 
 def make_product(pid, name):
     return demo_pb2.Product(
