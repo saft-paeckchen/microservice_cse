@@ -1,28 +1,27 @@
 # Search Service
 
-## Überblick
+## Overview
 
-Der **Search Service** ist ein eigenständiger Microservice der Google Online Boutique (HipsterShop).  
-Er stellt eine **Suchfunktion für Produkte** bereit, die über gRPC vom Frontend aufgerufen wird.
+The **Search Service** is an independant microservice of the Google Online Boutique (HipsterShop).  
+It enables a **search function for products**, that is called via gRPC from the frontend.
 
-Der Service filtert Produkte anhand eines Suchstrings (Substring-Suche im Produktnamen) und liefert eine passende Produktliste zurück.  
-Die Produktdaten werden **nicht selbst verwaltet**, sondern über den bestehenden `ProductCatalogService` bezogen.
+Products are filtered by looking at the search query and returning every product that includes the query as a substring.  
+Furthermore, the product data is **not managed seperately**, but uses the existing `ProductCatalogService`.
 
 ---
-## Projektstruktur
+## Project Structure
     searchservice/
     ├── proto/
-    │   └── search.proto              # gRPC-Definition des SearchService
+    │   └── search.proto              # gRPC-definition of the SearchService (legacy)
     ├── src/
-    │   ├── main.py                   # Startet den gRPC-Server
+    │   ├── main.py                   # Starts the grpc server
     │   ├── product_cache.py          # Cache + ProductCatalog-gRPC-Client
-    │   ├── search_pb2.py             # Generierter gRPC-Code
-    │   ├── search_pb2_grpc.py
     │   ├── demo_pb2.py               # ProductCatalog Protos
     │   └── demo_pb2_grpc.py
     ├── tests/
-    │   └── test.py                   # Unit-Tests (Mock des ProductCatalog)
+    │   └── test.py                   # Unit-Tests (ProductCatalog mock)
     ├── Dockerfile
+    ├── genproto.sh                   # generating the pb files
     ├── .dockerignore
     ├── requirements.in
     ├── requirements.txt
@@ -30,20 +29,28 @@ Die Produktdaten werden **nicht selbst verwaltet**, sondern über den bestehende
 
 ---
 
-## Architektur & Design
+## Architecture & Design
 
-### Verantwortlichkeiten
+### Responsibilities
 
 - **Search Service**
-  - gRPC-Server für Suchanfragen
-  - Caching von Produktdaten
-  - Filterlogik (Substring-Suche)
+  - gRPC-Server for search queries
+  - Caching of product data
+  - Filter logic (substring-search)
 - **ProductCatalogService**
-  - Quelle der Produktdaten
-  - Wird per gRPC als externer Service genutzt
+  - Source of product data
+  - Is used via gRPC externally
+- **Frontend**
+  - Receives and handles HTTP requests from UI
+  - Sends search query to SearchService
+  - Reloads proper HTML page
 
-### Datenfluss
+### Dataflow
 
+    HTML Page
+    |
+    | HTTP query
+    v
     Frontend
     |
     | gRPC Search(query)
@@ -60,70 +67,70 @@ Die Produktdaten werden **nicht selbst verwaltet**, sondern über den bestehende
 #### Service
 
     service SearchService {
-        rpc Search (SearchRequest) returns (SearchResponse);
+      rpc SearchedProducts (SearchedRequest) returns (SearchedResponse) {}
     }
 
 #### Messages
 
-    message SearchRequest {
-        string query = 1;
+    message SearchedRequest {
+      string query = 1;
+    }
+    
+    message SearchedResponse {
+      repeated Product products = 1;
     }
 
-    message SearchResponse {
-        repeated Product products = 1;
-    }
+The product-scheme is based of of the existing HipsterShop product model.
 
-Das Product-Schema basiert auf dem bestehenden HipsterShop-Produktmodell.
+### Caching Strategie 
 
-### Caching-Strategie 
+The service utilises an **in-memory-cache**, to circumvent unnecessary calls to the ProductCatalogService.
+- products are loaded once and saved for later calls
+- search requests will only be handled on the local cache
 
-Der Service nutzt einen **In-Memory-Cache**, um unnötige Aufrufe des ProductCatalogService zu vermeiden.
-- Produkte werden einmal geladen und zwischengespeichert
-- Suchanfragen werden ausschließlich auf dem lokalen Cache ausgeführt
+**Advantages**:
+- lower latency
+- relieving the ProductCatalogService
+- better scalability
 
-**Vorteile**:
-- geringere Latenz
-- Entlastung des ProductCatalogService
-- bessere Skalierbarkeit
-
-Der Cache ist bewusst einfach gehalten (kein LRU / keine Persistenz), da der Fokus auf Verständlichkeit und Korrektheit liegt.
+The cache is kept simple on purpose (no LRU / no persistence), to keep the focus on comprehensibility and correctness.
 
 ### Tests
 
-Es existieren Unit-Tests für die Kernlogik des Services.
+There are unit-tests for the main logic of the service.
 
-Getestet wird unter anderem:
-- korrekte Filterung nach Produktname
-- Case-insensitive Suche
-- Verhalten bei leerer Suche
+The tests are covering:
+- correct filtering of products
+- case-insensitive search
+- behaviour of empty searches
 
-Tests ausführen:
+Run tests via:
 
     pytest
 
-### Abhängigkeiten
+### Dependencies
 
 
 ### Build & Run (Docker)
 
-#### Docker Image bauen
+#### building the Docker Image
 
     docker build -t searchservice .
 
-#### Container starten
+#### starting the Container
 
-    docker run -p 8080:8080 searchservice
+    docker run -p 9090:9090 searchservice
 
-Der Service lauscht standardmäßig auf Port 8080.
+The service is typically bound to port 9090.
 
-### Qualitätsaspekte 
+### Quality aspect 
 
-Der Service adressiert folgende Software-Qualtitäten:
-- **Lose Kopplung** durch gRPC
-- **Performance** durch Caching
-- **Testbarkeit** durch Dependency Injection und Mocks
+The following software qualities are addressed by this service:
+- **Loose coupling** via gRPC
+- **Performance** via Caching
+- **Testibility** via Dependency Injection and Mocks
 
-## Mögliche Erweiterungen
+## Possible Extensions
 
-- Relevanzbewertung
-- erweiterter Filter (Kategorien,Preis)
+- filter by relevancy
+- expanded filter (categories, price)
