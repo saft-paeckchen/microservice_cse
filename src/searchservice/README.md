@@ -164,4 +164,4 @@ The following software qualities are addressed by this service:
 - expanded filter (categories, price)
 
 ## Demo Video:
-[Demo Video (demo_video.mkv)]
+[Demo Video](demo_video.mkv)
