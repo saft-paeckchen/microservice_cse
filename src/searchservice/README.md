@@ -21,6 +21,7 @@ Furthermore, the product data is **not managed seperately**, but uses the existi
     ├── tests/
     │   └── test.py                   # Unit-Tests (ProductCatalog mock)
     ├── Dockerfile
+    ├── demo_video.mkv                # Video showing the functionality and use cases of this service
     ├── genproto.sh                   # generating the pb files
     ├── .dockerignore
     ├── requirements.in
@@ -82,7 +83,7 @@ Furthermore, the product data is **not managed seperately**, but uses the existi
 
 The product-scheme is based of of the existing HipsterShop product model.
 
-### Caching Strategie 
+### Caching Strategy
 
 The service utilises an **in-memory-cache**, to circumvent unnecessary calls to the ProductCatalogService.
 - products are loaded once and saved for later calls
@@ -110,8 +111,14 @@ Run tests via:
 
 ### Dependencies
 
+- Linux or wsl
+- kubectl
+- skaffold
+- docker
+- (git, to download the repository only)
+- (gcloud, runs properly without it but there are some warnings)
 
-### Build & Run (Docker)
+### Build & Run SearchService (Docker)
 
 #### building the Docker Image
 
@@ -123,9 +130,30 @@ Run tests via:
 
 The service is typically bound to port 9090.
 
+### Build & Run Demo (local)
+
+Start a minikube local server that emulates a similiar environment to gcloud.
+
+    minikube start --driver=docker --cpus=4 --memory=4096
+
+From the root of the repository run:
+
+    skaffold dev
+
+This should deploy all microservices and therefore the demo.
+
+There are several ways to access the demo from here. One is to direct all traffic to some port like 8080 via kubectl:
+
+    kubectl port-forward svc/frontend 8080:80
+
+This way you can open the demo via most browsers with the URL:
+
+    localhost:8080/
+
 ### Quality aspect 
 
 The following software qualities are addressed by this service:
+- **Useability** via system design
 - **Loose coupling** via gRPC
 - **Performance** via Caching
 - **Testibility** via Dependency Injection and Mocks
@@ -134,3 +162,6 @@ The following software qualities are addressed by this service:
 
 - filter by relevancy
 - expanded filter (categories, price)
+
+## Demo Video:
+[Demo Video](demo_video.mkv)
