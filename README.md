@@ -6,7 +6,7 @@
 ## CSE
 All ressources to **our Implemented CSE Microservice** can be found here:
 
-    ![main/src/searchservice/](https://github.com/saft-paeckchen/microservice_cse/tree/main/src/searchservice/)
+  [src/searchservice/](src/searchservice/) 
 
 **Online Boutique** is a cloud-first microservices demo application.  The application is a
 web-based e-commerce app where users can browse items, add them to the cart, and purchase them.
