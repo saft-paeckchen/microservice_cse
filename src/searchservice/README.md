@@ -153,6 +153,7 @@ This way you can open the demo via most browsers with the URL:
 ### Quality aspect 
 
 The following software qualities are addressed by this service:
+- **Useability** via system design
 - **Loose coupling** via gRPC
 - **Performance** via Caching
 - **Testibility** via Dependency Injection and Mocks
@@ -161,3 +162,5 @@ The following software qualities are addressed by this service:
 
 - filter by relevancy
 - expanded filter (categories, price)
+
+[Demo Video (demo_video.mkv)]
